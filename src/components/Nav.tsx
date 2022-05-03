@@ -1,11 +1,15 @@
 import { useMeQuery } from "graphql/types";
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import StyledProfileImage from "./StyledProfileImage";
 
 export default () => {
     const { data } = useMeQuery();
     return (<StyledNav>
-        <img src={""} alt={"My profile"}></img>
+        <Link to="/">
+            <StyledProfileImage src={data?.me?.profileImageUrl ?? ""} alt={"My profile"}></StyledProfileImage>
+        </Link>
         <StyledInput placeholder="Search people, places..."></StyledInput>
         <span>icon 1</span>
         <span>icon 2</span>
@@ -22,7 +26,7 @@ const StyledNav = styled.nav`
     min-height: 3rem;
     box-shadow: ${({ theme }) => theme.shadows.base};
     padding: 0.2rem;
-
+    position: fixed;
 `
 const StyledInput = styled.input`
     border-radius: 12px;
@@ -42,3 +46,4 @@ const StyledInput = styled.input`
     }
 
 `
+

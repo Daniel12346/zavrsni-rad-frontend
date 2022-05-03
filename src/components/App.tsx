@@ -1,12 +1,14 @@
-import React, { ReactNode } from "react";
-import { Routes, Route, Outlet } from "react-router";
+import React from "react";
+import { Routes, Route } from "react-router";
 import GlobalStyle from "./styled/GlobalStyle";
 import { useMeQuery } from "graphql/types";
 import AuthScreen from "./screens/AuthScreen";
 import styled from "styled-components";
 import Loader from "./Loader";
+import UsersScreen from "./screens/UsersScreen";
 import UserScreen from "./screens/UserScreen";
-import Nav from "./Nav";
+import MeScreen from "./screens/MeScreen";
+import Layout from "./Layout";
 
 export default () => {
   const { data, error, loading } = useMeQuery();
@@ -22,9 +24,11 @@ export default () => {
         </StyledMainLoaderContainer> : !error && data?.me ?
 
           <Routes>
-            <Route element={<Layout />}>
-              <Route element={<UserScreen></UserScreen>} path="/" />
-            </Route>
+            {/* <Route element={<Layout />}> */}
+            <Route element={<MeScreen />} path="/" />
+            <Route element={<UsersScreen />} path="/users" />
+            <Route element={<UserScreen />} path="/user" />
+            {/* </Route> */}
           </Routes>
 
           : <AuthScreen></AuthScreen>
@@ -43,16 +47,8 @@ const StyledMainLoaderContainer = styled.div`
     align-items: center;
 `
 
-const StyledLayoutContainer = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
+export const StyledLayoutContainer = styled.div`
   min-height: 100vh;
 `
 
-const Layout = () => {
-  return <StyledLayoutContainer>
-    <Nav></Nav>
-    <Outlet></Outlet>
-  </StyledLayoutContainer>
-}
+
