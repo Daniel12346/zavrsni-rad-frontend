@@ -1,16 +1,18 @@
-import { navigate } from "@reach/router";
+import { useNavigate } from "react-router";
 import { ME_QUERY } from "graphql/queries";
 import { useLogInMutation, useSignUpMutation } from "graphql/types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import Loader from "./Loader";
 import { StyledButton } from "./StyledButton";
+import { StyledButtonContainer } from "./StyledButtonContainer";
 
 export default ({ mode, setMode }: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const navigate = useNavigate();
 
 
   const [logIn, { error: logInError, loading }] = useLogInMutation({
@@ -111,11 +113,47 @@ export default ({ mode, setMode }: any) => {
       </div>
     </StyledForm >
   );
-};
+
+}
 
 
 
-
+const StyledForm = styled.form`
+  display: flex;
+  flex-flow: column nowrap;
+  max-width: 30rem;
+  min-height: 12rem;
+  justify-content: space-between;
+  label{
+    display: flex;
+   flex-flow: column nowrap;
+   color: ${({ theme }) => theme.colors.primary4};
+  }
+  input{
+    background: none;
+    width: 100%;
+    margin-bottom: 0.2rem;
+    align-self: center;
+    min-height: 1.4rem;
+    border-bottom: 2px solid ${({ theme }) => theme.colors.primary4};
+  }
+  button{
+    color: white;
+  }
+  #form-inside{
+    background: ${({ theme }) => theme.colors.primary1};
+    padding: 0;
+    display: flex;
+    flex-flow: column wrap;
+    min-height: 80%;
+    justify-content: space-evenly;
+    padding: 1rem;
+    #logIn{
+      align-self: center;
+      background: ${({ theme }) => theme.colors.primary3};
+       min-width: 20%;
+    }
+}
 `
 
 

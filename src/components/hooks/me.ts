@@ -2,7 +2,7 @@ import {
   useMeQuery,
 } from "graphql/types";
 import apolloClient from "apolloClient";
-import { navigate } from "@reach/router";
+import { useNavigate } from "react-router";
 
 export const useMe = () => {
 
@@ -10,6 +10,7 @@ export const useMe = () => {
   const { data, loading, error } = useMeQuery();
 
   const me = data?.me;
+  const navigate = useNavigate();
   const id = me?.id ?? null;
 
 

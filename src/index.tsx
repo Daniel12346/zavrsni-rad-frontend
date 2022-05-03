@@ -7,11 +7,14 @@ import { theme } from "theme";
 import { ThemeProvider } from "styled-components";
 import client from "apolloClient";
 import { ApolloProvider } from "@apollo/client";
+import { BrowserRouter } from "react-router-dom"
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ThemeProvider theme={theme}>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </ThemeProvider>
   </ApolloProvider>,
   document.getElementById("root")
