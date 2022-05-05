@@ -32,11 +32,14 @@ export type Mutation = {
   followUser?: Maybe<MutationResult>;
   logIn?: Maybe<Scalars['String']>;
   uploadImage?: Maybe<MutationResult>;
+  uploadPostImage?: Maybe<MutationResult>;
+  uploadPostImages?: Maybe<MutationResult>;
 };
 
 
 export type MutationCreatePostArgs = {
-  mainImageUrl?: InputMaybe<Scalars['String']>;
+  additionalImageFiles?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
+  mainImageFile?: InputMaybe<Scalars['Upload']>;
   text?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };
@@ -51,7 +54,7 @@ export type MutationCreateUserArgs = {
 
 
 export type MutationDeleteUserArgs = {
-  id?: InputMaybe<Scalars['ID']>;
+  id: Scalars['ID'];
 };
 
 
@@ -67,7 +70,21 @@ export type MutationLogInArgs = {
 
 
 export type MutationUploadImageArgs = {
-  file?: InputMaybe<Scalars['Upload']>;
+  file: Scalars['Upload'];
+  purpose?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationUploadPostImageArgs = {
+  file: Scalars['Upload'];
+  postId: Scalars['ID'];
+  purpose: Scalars['String'];
+};
+
+
+export type MutationUploadPostImagesArgs = {
+  files: Array<InputMaybe<Scalars['Upload']>>;
+  postId: Scalars['ID'];
 };
 
 export type MutationResult = {
@@ -107,6 +124,7 @@ export type QueryUserArgs = {
 
 export type User = {
   __typename?: 'User';
+  backgroundImageUrl?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   firstName: Scalars['String'];
   followers: Array<Maybe<User>>;
@@ -122,7 +140,9 @@ export type UserInput = {
   password?: InputMaybe<Scalars['String']>;
 };
 
-export type UserInfoFragment = { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null };
+export type UserInfoFragment = { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null };
+
+export type PostInfoFragment = { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string } };
 
 export type LogInMutationVariables = Exact<{
   email: Scalars['String'];
@@ -140,31 +160,42 @@ export type SignUpMutationVariables = Exact<{
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null } };
+export type SignUpMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } };
 
 export type UploadImageMutationVariables = Exact<{
-  file?: InputMaybe<Scalars['Upload']>;
+  file: Scalars['Upload'];
+  purpose?: InputMaybe<Scalars['String']>;
 }>;
 
 
 export type UploadImageMutation = { __typename?: 'Mutation', uploadImage?: { __typename?: 'MutationResult', success?: boolean | null } | null };
 
+export type CreatePostMutationVariables = Exact<{
+  mainImageFile?: InputMaybe<Scalars['Upload']>;
+  additionalImageFiles?: InputMaybe<Array<InputMaybe<Scalars['Upload']>> | InputMaybe<Scalars['Upload']>>;
+  title?: InputMaybe<Scalars['String']>;
+  text?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string } } };
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null } | null> };
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null, posts: Array<{ __typename?: 'Post', mainImageUrl?: string | null, imageUrls: Array<string | null>, title?: string | null, text?: string | null } | null> } | null };
 
 export type UserQueryVariables = Exact<{
   id?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null } | null };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null };
 
 export const UserInfoFragmentDoc = gql`
     fragment UserInfo on User {
@@ -172,6 +203,22 @@ export const UserInfoFragmentDoc = gql`
   lastName
   id
   profileImageUrl
+  backgroundImageUrl
+}
+    `;
+export const PostInfoFragmentDoc = gql`
+    fragment PostInfo on Post {
+  id
+  author {
+    id
+    firstName
+    lastName
+  }
+  createdAt
+  mainImageUrl
+  title
+  text
+  imageUrls
 }
     `;
 export const LogInDocument = gql`
@@ -248,8 +295,8 @@ export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
 export const UploadImageDocument = gql`
-    mutation uploadImage($file: Upload) {
-  uploadImage(file: $file) {
+    mutation uploadImage($file: Upload!, $purpose: String) {
+  uploadImage(file: $file, purpose: $purpose) {
     success
   }
 }
@@ -270,6 +317,7 @@ export type UploadImageMutationFn = Apollo.MutationFunction<UploadImageMutation,
  * const [uploadImageMutation, { data, loading, error }] = useUploadImageMutation({
  *   variables: {
  *      file: // value for 'file'
+ *      purpose: // value for 'purpose'
  *   },
  * });
  */
@@ -280,6 +328,47 @@ export function useUploadImageMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type UploadImageMutationHookResult = ReturnType<typeof useUploadImageMutation>;
 export type UploadImageMutationResult = Apollo.MutationResult<UploadImageMutation>;
 export type UploadImageMutationOptions = Apollo.BaseMutationOptions<UploadImageMutation, UploadImageMutationVariables>;
+export const CreatePostDocument = gql`
+    mutation createPost($mainImageFile: Upload, $additionalImageFiles: [Upload], $title: String, $text: String) {
+  createPost(
+    mainImageFile: $mainImageFile
+    additionalImageFiles: $additionalImageFiles
+    title: $title
+    text: $text
+  ) {
+    ...PostInfo
+  }
+}
+    ${PostInfoFragmentDoc}`;
+export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
+
+/**
+ * __useCreatePostMutation__
+ *
+ * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
+ *   variables: {
+ *      mainImageFile: // value for 'mainImageFile'
+ *      additionalImageFiles: // value for 'additionalImageFiles'
+ *      title: // value for 'title'
+ *      text: // value for 'text'
+ *   },
+ * });
+ */
+export function useCreatePostMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, options);
+      }
+export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
+export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
+export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
 export const UsersDocument = gql`
     query users {
   users {
@@ -318,6 +407,12 @@ export const MeDocument = gql`
     query me {
   me {
     ...UserInfo
+    posts {
+      mainImageUrl
+      imageUrls
+      title
+      text
+    }
   }
 }
     ${UserInfoFragmentDoc}`;

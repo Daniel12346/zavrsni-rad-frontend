@@ -19,7 +19,7 @@ export const theme = {
     text3: "hsla(168, 94%, 29%, 1)",
 
 
-    background1: "hsla(0, 6 %, 97 %, 1)"
+    background1: "hsla(0, 6%, 97%, 1)"
 
   },
   shadows: {

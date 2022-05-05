@@ -6,6 +6,22 @@ export const UserInfo = gql`
     lastName
     id
     profileImageUrl
+    backgroundImageUrl
   }
 `;
 
+export const PostInfo = gql`
+  fragment PostInfo on Post{
+    id
+    author{
+      id
+      firstName
+      lastName
+    }
+    createdAt
+    mainImageUrl
+    title
+    text
+    imageUrls
+  }
+`

@@ -14,9 +14,16 @@ export const ME_QUERY = gql`
   query me {
     me {
       ...UserInfo
+      posts{
+        mainImageUrl
+        imageUrls 
+        title
+        text              
+      }
     }
   }
   ${UserInfo}
+
 `;
 
 export const USER_QUERY = gql`

@@ -27,6 +27,7 @@ const StyledNav = styled.nav`
     box-shadow: ${({ theme }) => theme.shadows.base};
     padding: 0.2rem;
     position: fixed;
+    z-index: 3;
 `
 const StyledInput = styled.input`
     border-radius: 12px;

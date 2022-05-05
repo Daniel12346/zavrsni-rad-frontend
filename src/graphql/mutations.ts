@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { UserInfo } from "./fragments";
+import { PostInfo, UserInfo } from "./fragments";
 
 export const LOGIN_MUTATION = gql`
   mutation logIn($email: String!, $password: String!) {
@@ -39,12 +39,20 @@ export const SIGNUP_MUTATION = gql`
 
 
 export const UPLOAD_IMAGE_MUTATION = gql`
-  mutation uploadImage($file: Upload){
-    uploadImage(file: $file){
+  mutation uploadImage($file: Upload!, $purpose: String){
+    uploadImage(file: $file, purpose: $purpose){
       success
     }
   }
 `
 
 
+export const CREATE_POST_MUTATTION = gql`
+  mutation createPost($mainImageFile: Upload, $additionalImageFiles: [Upload], $title: String, $text: String){
+    createPost(mainImageFile:$mainImageFile, additionalImageFiles:$additionalImageFiles, title:$title, text:$text){
+      ...PostInfo
+    }
+  }
+  ${PostInfo}
+`
 
