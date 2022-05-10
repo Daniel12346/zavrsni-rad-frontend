@@ -1,3 +1,4 @@
+import { ME_QUERY } from "graphql/queries";
 import { useCreatePostMutation } from "graphql/types";
 import React, { useState } from "react"
 import styled from "styled-components"
@@ -13,12 +14,17 @@ export default ({ isDisplayed, setIsDisplayed }: CreatePostModalProps) => {
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
     const [mainImageFile, setMainImageFile] = useState<any>();
-    const [additionalImageFiles, setAdditionalImageFiles] = useState<any[]>();
-    const [createPost, { loading, error }] = useCreatePostMutation();
+    let additionalImageFiles: any = null;
+    const [createPost, { loading, error }] = useCreatePostMutation({ refetchQueries: [{ query: ME_QUERY }] });
+    error && console.log(error);
 
-    return <StyledModalBackdrop isDisplayed={isDisplayed} onClick={() => setIsDisplayed(false)}>
+    return <StyledModalBackdrop isDisplayed={isDisplayed} onClick={() => {
+        // setIsDisplayed(false);
+    }
+    }>
         <StyledModal isDisplayed={isDisplayed} onSubmit={(e) => {
             e.preventDefault();
+            console.log(additionalImageFiles);
             createPost({ variables: { title, text, mainImageFile, additionalImageFiles } });
         }}>
             <input name="title" placeholder="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -26,15 +32,17 @@ export default ({ isDisplayed, setIsDisplayed }: CreatePostModalProps) => {
             <input type="file" onChange={({ target: { validity, files: [file] } }: any) => {
                 if (validity.valid) {
                     setMainImageFile(file);
-                    console.log(file);
                 }
                 // setIsvalid(validity.valid);
             }} />
             {/* TODO!!!: popravit na backendu */}
             <input type="file" multiple onChange={({ target: { validity, files } }: any) => {
+                console.log(validity);
                 if (validity.valid) {
-                    setAdditionalImageFiles(files);
+                    additionalImageFiles = files;
+                    console.log(additionalImageFiles);
                     console.log(files);
+
                 }
                 // setIsvalid(validity.valid);
             }} />

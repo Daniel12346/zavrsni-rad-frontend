@@ -5,7 +5,7 @@ export const theme = {
     primary3: "hsl(158, 46%, 70%)",
     primary4: "hsl(158, 46%, 45%)",
 
-    postBg1: "hsla(160, 33%, 88%, 0.7)",
+    postBg1: "hsla(160, 33%, 88%, 0.8)",
     postBg2: "hsla(158, 10%, 98%, 0.9)",
     postBg3: "hsla(160, 33%, 88%, 0.9)",
 

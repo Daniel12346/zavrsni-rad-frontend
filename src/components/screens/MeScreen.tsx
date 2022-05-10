@@ -6,6 +6,8 @@ import Nav from "components/Nav";
 import ScreenContentContainer from "../ScreenContentContainer";
 import CreatePostButton from "components/CreatePostButton";
 import styled from "styled-components";
+import Post from "components/Post";
+import { Post as PostType } from "graphql/types";
 
 export default () => {
     const { me } = useMe();
@@ -23,8 +25,9 @@ export default () => {
             <StyledUserInfo>
                 <StyledProfileImage src={me?.profileImageUrl ?? ""} />
                 <span>{me?.firstName}</span>
-                {/* //TODO: koristit post.id za key */}
-                <ul>{me?.posts.map(post => post && <li>{post.title}</li>)}</ul>
+                <StyledPostList>
+                    {me?.posts.map(post => <Post post={post as PostType} />)}
+                </StyledPostList>
             </StyledUserInfo>
         </ScreenContentContainer>
         <CreatePostButton />
@@ -32,8 +35,24 @@ export default () => {
 }
 
 const StyledUserInfo = styled.div`
-    background: ${({ theme }) => theme.colors.postBg1}
+    background: ${({ theme }) => theme.colors.postBg1};
+    width: 95%;
+    max-width: 40rem;
+    display:flex;
+    flex-flow: column nowrap;
+    align-items: center;
 `
+
+const StyledPostList = styled.ul`
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    list-style: none;
+    width: 95%;
+    max-width: 30rem;
+
+`
+
 
 
 
