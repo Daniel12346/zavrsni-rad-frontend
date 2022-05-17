@@ -22,9 +22,9 @@ export default ({ imageUrls }: Props) => {
 
     return <>
         <StyledImagesContainer>
-            <img className="prev" src={imageUrls[prevImageIdx]} />
-            <img className="current" src={imageUrls[currentImageIdx]} />
-            <img className="next" src={imageUrls[nextImageIdx]} />
+            <img className="prev" src={imageUrls[prevImageIdx]} alt="" />
+            <img className="current" src={imageUrls[currentImageIdx]} alt="" />
+            <img className="next" src={imageUrls[nextImageIdx]} alt="" />
 
         </StyledImagesContainer>
         <ImageGallery imageUrls={imageUrls} onImageClick={handleGalleryImageClick} />

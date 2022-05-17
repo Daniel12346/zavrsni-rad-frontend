@@ -1,10 +1,11 @@
 import { ME_QUERY } from "graphql/queries";
 import { useCreatePostMutation } from "graphql/types";
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import styled from "styled-components"
 import ImageGallery from "./ImageGallery";
 import { ReactComponent as ConfirmPostCreationButton } from "images/confirm_create_post.svg"
 import { ReactComponent as ExitPostCreationButton } from "images/exit_create_post.svg"
+import Loader from "./Loader";
 
 interface CreatePostModalProps {
     isModalDisplayed: boolean;
@@ -18,7 +19,7 @@ export default ({ isModalDisplayed, setIsModalDisplayed }: CreatePostModalProps)
     const [text, setText] = useState("");
     const [mainImageFile, setMainImageFile] = useState<any>();
     const [additionalImageFiles, setAdditionalImageFiles] = useState<any[]>([]);
-    const [createPost, { loading, error }] = useCreatePostMutation({ refetchQueries: [{ query: ME_QUERY }] });
+    const [createPost, { loading, error }] = useCreatePostMutation({ refetchQueries: [{ query: ME_QUERY }], onCompleted: () => { setIsModalDisplayed(false) } });
 
 
     return <StyledModalBackdrop isModalDisplayed={isModalDisplayed}>
@@ -65,6 +66,10 @@ export default ({ isModalDisplayed, setIsModalDisplayed }: CreatePostModalProps)
                     <button type="submit"><ConfirmPostCreationButton /></button>
                 </div>
             </StyledGalleryAndCreationConfirmationButtonContainer>
+            <Row alignItems="center" justifyContent="center">
+            {loading && <Loader />}
+            {error && <span className="error">{error.message}</span>}
+            </Row>
         </StyledModal>
     </StyledModalBackdrop>
 }
@@ -190,4 +195,6 @@ const Row = styled.div<RowProps>`
     align-items: ${({ alignItems }) => alignItems || "initial"};   
 `
 
-
+// StyledLoadingAndErrorIndicator = styled.div`
+    
+// `

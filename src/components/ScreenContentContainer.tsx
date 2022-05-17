@@ -12,7 +12,8 @@ const ScreenContentContainer = styled.div<Props>`
     flex-flow: column nowrap;
     align-items: center;
     min-height: 100vh;
-    background-size: cover;
+    background-size: 100vw 100vh;
+    background-attachment: fixed;
     background-position: center;
 `;
 

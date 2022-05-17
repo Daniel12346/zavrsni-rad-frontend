@@ -1,5 +1,6 @@
-import { ReactComponent as Loader } from "images/gql_loader.svg"
+import { ReactComponent as LoaderSVG } from "images/zavrsni_loader.svg"
 import styled, { keyframes } from "styled-components"
+
 
 
 const rotate = keyframes`
@@ -11,9 +12,15 @@ const rotate = keyframes`
     }
 }`
 
-export default styled(Loader)`
-    animation: ${rotate} 1.2s infinite;
-    height: 50px;
-    fill: blue;
+export default styled(LoaderSVG)`
+    #loop1{
+    transform-origin: center;
+     animation: ${rotate} 1.2s infinite ease-in-out;
+    }
+    #loop2{
+    transform-origin: center;
+     animation: ${rotate} 1.2s infinite reverse ease-out;
+    }
     width: 50px;
+    height: 50px;
 `
