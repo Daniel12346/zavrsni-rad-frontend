@@ -17,7 +17,7 @@ export default ({ post: { imageUrls, title, text, mainImageUrl } }: PostProps) =
             <p className="postText">
                 {text}
             </p>
-            {imageUrls?.length && <ImageGallery imageUrls={imageUrls as string[]} />}
+            {imageUrls?.length > 0 && <ImageGallery imageUrls={imageUrls as string[]} />}
         </>
     }
 </StyledPostContainer>)

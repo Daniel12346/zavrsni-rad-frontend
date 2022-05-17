@@ -8,7 +8,7 @@ export default createGlobalStyle`
     border: none;
     /*TODO: font*/
     font-family: "serif";
-    overflow-x: hidden
+    overflow-x: hidden;
 }
 
 button{

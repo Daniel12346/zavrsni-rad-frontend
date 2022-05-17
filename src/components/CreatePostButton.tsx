@@ -10,7 +10,7 @@ export default () => {
             setIsModalDisplayed(prevState => !prevState)
         }
         } />
-        <CreatePostModal isDisplayed={isModalDisplayed} setIsDisplayed={setIsModalDisplayed} />
+        <CreatePostModal isModalDisplayed={isModalDisplayed} setIsModalDisplayed={setIsModalDisplayed} />
     </div>
 }
 
