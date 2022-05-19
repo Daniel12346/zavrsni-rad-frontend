@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { ME_QUERY } from "graphql/queries";
 import { useUploadImageMutation } from "graphql/types";
+import StyledFileInput from "./StyledFileInput";
 
 //TODO: styling 
 export default ({ purpose }: Props) => {
@@ -8,12 +9,12 @@ export default ({ purpose }: Props) => {
     const [isValid, setIsvalid] = useState(true);
     return (
         <div>
-            <input type="file" onChange={({ target: { validity, files: [file] } }: any) => {
+            <StyledFileInput type="file" onChange={({ target: { validity, files: [file] } }: any) => {
                 if (validity.valid) {
                     uploadImage({ variables: { file, purpose } });
                 }
                 setIsvalid(validity.valid);
-            }}></input>
+            }}></StyledFileInput>
             {loading && <span>uploading...</span>}
             {(error || !isValid) && <span>Image upload failed</span>}
         </div>)
@@ -21,5 +22,6 @@ export default ({ purpose }: Props) => {
 }
 
 interface Props {
-    purpose: "profile" | "background"
+    purpose: "profile" | "background";
+
 }

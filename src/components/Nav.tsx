@@ -3,6 +3,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import StyledProfileImage from "./StyledProfileImage";
+import { ReactComponent as NotificationsIcon } from "images/bell-svgrepo-com.svg"
+import { ReactComponent as SettingsIcon } from "images/settings-svgrepo-com.svg"
+
 
 export default () => {
     const { data } = useMeQuery();
@@ -11,8 +14,8 @@ export default () => {
             <StyledProfileImage src={data?.me?.profileImageUrl ?? ""} alt={"My profile"}></StyledProfileImage>
         </Link>
         <StyledInput placeholder="Search people, places..."></StyledInput>
-        <span>icon 1</span>
-        <span>icon 2</span>
+        <span className="iconContainer"><NotificationsIcon /></span>
+        <span className="iconContainer"><SettingsIcon /></span>
     </StyledNav>)
 }
 
@@ -28,6 +31,16 @@ const StyledNav = styled.nav`
     padding: 0.2rem;
     position: fixed;
     z-index: 3;
+
+    .iconContainer{
+        width: 1.6rem;
+        height: 1.6rem;
+        display:flex;
+        align-items: center;
+        >*{
+            fill:green
+        }
+    }
 `
 const StyledInput = styled.input`
     border-radius: 12px;

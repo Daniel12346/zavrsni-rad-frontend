@@ -6,6 +6,7 @@ import ImageGallery from "./ImageGallery";
 import { ReactComponent as ConfirmPostCreationButton } from "images/confirm_create_post.svg"
 import { ReactComponent as ExitPostCreationButton } from "images/exit_create_post.svg"
 import Loader from "./Loader";
+import StyledFileInput from "./StyledFileInput";
 
 interface CreatePostModalProps {
     isModalDisplayed: boolean;
@@ -133,19 +134,7 @@ const StyledModal = styled.form<CreatePostModalProps>`
         cursor: pointer;
     }
 `
-const StyledFileInput = styled.input`
-    padding: 0.5rem;
-    width: 5rem;
-    margin-left: 1rem;
-    color: transparent;
-    ::file-selector-button{
-        width: auto;
-        border-radius: 0.5rem;
-        background: ${({ theme }) => theme.colors.button1};
-        color: white;
-        font-weight: normal;
-    }  
-`
+
 const StyledGalleryAndCreationConfirmationButtonContainer = styled.div`
     display:flex;
     flex-flow: row wrap;

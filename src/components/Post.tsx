@@ -51,7 +51,8 @@ const StyledPostContainer = styled.li`
     .postText{
         align-self: flex-start;
         color: ${({ theme }) => theme.colors.textBasic};
-        padding: 0 0.3rem;
+        padding: 0 1.5rem;
+        margin-bottom: 1rem;
         /* order: 3; */
     }
 
