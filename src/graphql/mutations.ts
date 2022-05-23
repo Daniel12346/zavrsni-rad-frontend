@@ -4,19 +4,10 @@ import { PostInfo, UserInfo } from "./fragments";
 export const LOGIN_MUTATION = gql`
   mutation logIn($email: String!, $password: String!) {
     #returns a jwt (string)
-    #todo: refactor auth data (return user data)
     logIn(email: $email, password: $password)
   }
 `;
-/*
-export const LOGOUT_MUTATION = gql`
-  mutation {
-    logOut {
-      success
-    }
-  }
-`;
-*/
+
 export const SIGNUP_MUTATION = gql`
   mutation signUp(
     $firstName: String!
@@ -56,3 +47,10 @@ export const CREATE_POST_MUTATTION = gql`
   ${PostInfo}
 `
 
+export const FOLLOW_USER_MUTATION = gql`
+  mutation followUser($id: ID){
+    followUser(id: $id){
+      success
+    }
+  }
+`

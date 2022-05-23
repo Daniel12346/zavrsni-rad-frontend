@@ -9,6 +9,7 @@ import styled from "styled-components";
 import Post from "components/Post";
 import { Post as PostType } from "graphql/types";
 import { ReactComponent as AchievementGold } from "images/achievement_gold.svg"
+import StyledUserInfo from "components/StyledUserInfo";
 
 export default () => {
     const { me } = useMe();
@@ -23,13 +24,13 @@ export default () => {
                 <ImageUploader purpose="background"></ImageUploader>
             </div> */}
             <StyledUserInfo>
-                <StyledLargeProfileImage src={me?.profileImageUrl ?? ""} />
+                <StyledProfileImage isLarge src={me?.profileImageUrl ?? ""} />
                 <span className="userName">{me?.firstName} {me?.lastName}</span>
                 <StyledAchievementsContainer>
                     {/* TODO: */}
-                    <AchievementGold></AchievementGold>
-                    <AchievementGold></AchievementGold>
-                    <AchievementGold></AchievementGold>
+                    <AchievementGold />
+                    <AchievementGold />
+                    <AchievementGold />
                 </StyledAchievementsContainer>
             </StyledUserInfo>
             <StyledPostList>
@@ -39,21 +40,6 @@ export default () => {
         <CreatePostButton />
     </>
 }
-
-const StyledUserInfo = styled.div`
-    background: ${({ theme }) => theme.colors.primary3};
-    width: 95%;
-    max-width: 35rem;
-    display:flex;
-    flex-flow: row wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 1rem;
-
-    .userName{
-        color: darkgreen;
-    }
-`
 
 const StyledPostList = styled.ul`
     display: flex;
@@ -66,10 +52,6 @@ const StyledPostList = styled.ul`
     max-width: 35rem;
 `
 
-const StyledLargeProfileImage = styled(StyledProfileImage)`
-    height: 4rem;
-    width: 4rem;
-`
 const StyledAchievementsContainer = styled.div`
     width: 100%;
 `

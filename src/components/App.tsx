@@ -8,7 +8,6 @@ import Loader from "./Loader";
 import UsersScreen from "./screens/UsersScreen";
 import UserScreen from "./screens/UserScreen";
 import MeScreen from "./screens/MeScreen";
-import Layout from "./Layout";
 
 export default () => {
   const { data, error, loading } = useMeQuery();
@@ -27,8 +26,8 @@ export default () => {
             {/* <Route element={<Layout />}> */}
             <Route element={<MeScreen />} path="/" />
             <Route element={<UsersScreen />} path="/users" />
-            <Route element={<UserScreen />} path="/user" />
-            {/* </Route> */}
+            {/* <Route element={<UserScreen />} path="/user" /> */}
+
           </Routes>
 
           : <AuthScreen></AuthScreen>

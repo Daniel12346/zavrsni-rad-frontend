@@ -180,6 +180,13 @@ export type CreatePostMutationVariables = Exact<{
 
 export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string } } };
 
+export type FollowUserMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type FollowUserMutation = { __typename?: 'Mutation', followUser?: { __typename?: 'MutationResult', success?: boolean | null } | null };
+
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -188,7 +195,7 @@ export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'Us
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null, posts: Array<{ __typename?: 'Post', mainImageUrl?: string | null, imageUrls: Array<string | null>, title?: string | null, text?: string | null } | null> } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null, posts: Array<{ __typename?: 'Post', mainImageUrl?: string | null, imageUrls: Array<string | null>, title?: string | null, text?: string | null } | null>, followers: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null>, following: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null> } | null };
 
 export type UserQueryVariables = Exact<{
   id?: InputMaybe<Scalars['String']>;
@@ -369,6 +376,39 @@ export function useCreatePostMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
 export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
 export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
+export const FollowUserDocument = gql`
+    mutation followUser($id: ID) {
+  followUser(id: $id) {
+    success
+  }
+}
+    `;
+export type FollowUserMutationFn = Apollo.MutationFunction<FollowUserMutation, FollowUserMutationVariables>;
+
+/**
+ * __useFollowUserMutation__
+ *
+ * To run a mutation, you first call `useFollowUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useFollowUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [followUserMutation, { data, loading, error }] = useFollowUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFollowUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<FollowUserMutation, FollowUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<FollowUserMutation, FollowUserMutationVariables>(FollowUserDocument, options);
+      }
+export type FollowUserMutationHookResult = ReturnType<typeof useFollowUserMutation>;
+export type FollowUserMutationResult = Apollo.MutationResult<FollowUserMutation>;
+export type FollowUserMutationOptions = Apollo.BaseMutationOptions<FollowUserMutation, FollowUserMutationVariables>;
 export const UsersDocument = gql`
     query users {
   users {
@@ -412,6 +452,12 @@ export const MeDocument = gql`
       imageUrls
       title
       text
+    }
+    followers {
+      ...UserInfo
+    }
+    following {
+      ...UserInfo
     }
   }
 }

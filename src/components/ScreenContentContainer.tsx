@@ -6,7 +6,7 @@ interface Props {
 }
 
 const ScreenContentContainer = styled.div<Props>`
-    background: ${({ backgroundUrl }) => backgroundUrl ? `url(${backgroundUrl})` : "blue"};
+    background: ${({ backgroundUrl, theme }) => backgroundUrl ? `url(${backgroundUrl})` : theme.colors.background1};
     padding-top: 5rem;
     display: flex;
     flex-flow: column nowrap;

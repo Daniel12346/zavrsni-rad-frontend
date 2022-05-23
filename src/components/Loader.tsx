@@ -15,7 +15,7 @@ const rotate = keyframes`
 export default styled(LoaderSVG)`
     #loop1{
     transform-origin: center;
-     animation: ${rotate} 1.2s infinite ease-in-out;
+     animation: ${rotate} 1.2s infinite ease-out;
     }
     #loop2{
     transform-origin: center;

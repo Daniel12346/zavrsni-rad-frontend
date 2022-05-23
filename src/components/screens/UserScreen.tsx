@@ -5,28 +5,34 @@ import StyledProfileImage from "components/StyledProfileImage";
 import Nav from "components/Nav";
 import ScreenContentContainer from "../ScreenContentContainer";
 import styled from "styled-components";
+import { useUserQuery } from "graphql/types";
 
-export default () => {
-    const { me } = useMe();
+//TODO: router variable
+interface Props {
+    userId: string;
+}
+export default ({ userId }: Props) => {
+    const { data, loading, error } = useUserQuery({ variables: { id: userId } });
+    const user = data?.user;
 
-    if (!me) return null;
-    return <>
-        <Nav />
-        <ScreenContentContainer>
-            <StyledUserInfo>
-                <StyledProfileImage src={me.profileImageUrl ?? ""} />
-                <StyledUserDetails>
-                    <span>{`${me.firstName} ${me.lastName}`}</span>
-                    <span>Split</span>
-                </StyledUserDetails>
-                <button>Follow</button>
-                <div style={{ width: "100%" }}>Achievements:</div>
-            </StyledUserInfo>
-            <div>
+    // if (!user) return null;
+    // return <>
+    //     <Nav />
+    //     <ScreenContentContainer>
+    //         <StyledUserInfo>
+    //             <StyledProfileImage src={user.profileImageUrl ?? ""} />
+    //             <StyledUserDetails>
+    //                 <span>{`${me.firstName} ${.lastName}`}</span>
+    //                 <span>Split</span>
+    //             </StyledUserDetails>
+    //             <button>Follow</button>
+    //             <div style={{ width: "100%" }}>Achievements:</div>
+    //         </StyledUserInfo>
+    //         <div>
 
-            </div>
-        </ScreenContentContainer>
-    </>
+    //         </div>
+    //     </ScreenContentContainer>
+    // </>
 }
 
 const StyledUserInfo = styled.div`

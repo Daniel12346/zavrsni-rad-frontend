@@ -20,6 +20,12 @@ export const ME_QUERY = gql`
         title
         text              
       }
+      followers{
+        ...UserInfo
+      }
+      following{
+        ...UserInfo
+      }
     }
   }
   ${UserInfo}
