@@ -1,5 +1,8 @@
 schema:
+ 
 
+
+ 
 
   - https://zavrsni-rad-server.herokuapp.com/graphql
   - ./src/graphql/localSchema.ts
