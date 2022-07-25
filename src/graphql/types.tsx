@@ -108,8 +108,10 @@ export type Query = {
   me?: Maybe<User>;
   post?: Maybe<Post>;
   posts: Array<Maybe<Post>>;
+  postsByKey?: Maybe<Array<Maybe<Post>>>;
   user?: Maybe<User>;
   users: Array<Maybe<User>>;
+  usersByKey?: Maybe<Array<Maybe<User>>>;
 };
 
 
@@ -118,8 +120,18 @@ export type QueryPostArgs = {
 };
 
 
+export type QueryPostsByKeyArgs = {
+  key?: InputMaybe<Scalars['String']>;
+};
+
+
 export type QueryUserArgs = {
   id?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryUsersByKeyArgs = {
+  key?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -203,6 +215,20 @@ export type UserQueryVariables = Exact<{
 
 
 export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null };
+
+export type UsersByKeyQueryVariables = Exact<{
+  key?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UsersByKeyQuery = { __typename?: 'Query', usersByKey?: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null> | null };
+
+export type PostsByKeyQueryVariables = Exact<{
+  key?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type PostsByKeyQuery = { __typename?: 'Query', postsByKey?: Array<{ __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string } } | null> | null };
 
 export const UserInfoFragmentDoc = gql`
     fragment UserInfo on User {
@@ -524,3 +550,73 @@ export function useUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOpt
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export const UsersByKeyDocument = gql`
+    query usersByKey($key: String) {
+  usersByKey(key: $key) {
+    ...UserInfo
+  }
+}
+    ${UserInfoFragmentDoc}`;
+
+/**
+ * __useUsersByKeyQuery__
+ *
+ * To run a query within a React component, call `useUsersByKeyQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersByKeyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersByKeyQuery({
+ *   variables: {
+ *      key: // value for 'key'
+ *   },
+ * });
+ */
+export function useUsersByKeyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<UsersByKeyQuery, UsersByKeyQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<UsersByKeyQuery, UsersByKeyQueryVariables>(UsersByKeyDocument, options);
+      }
+export function useUsersByKeyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<UsersByKeyQuery, UsersByKeyQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<UsersByKeyQuery, UsersByKeyQueryVariables>(UsersByKeyDocument, options);
+        }
+export type UsersByKeyQueryHookResult = ReturnType<typeof useUsersByKeyQuery>;
+export type UsersByKeyLazyQueryHookResult = ReturnType<typeof useUsersByKeyLazyQuery>;
+export type UsersByKeyQueryResult = Apollo.QueryResult<UsersByKeyQuery, UsersByKeyQueryVariables>;
+export const PostsByKeyDocument = gql`
+    query postsByKey($key: String) {
+  postsByKey(key: $key) {
+    ...PostInfo
+  }
+}
+    ${PostInfoFragmentDoc}`;
+
+/**
+ * __usePostsByKeyQuery__
+ *
+ * To run a query within a React component, call `usePostsByKeyQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostsByKeyQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePostsByKeyQuery({
+ *   variables: {
+ *      key: // value for 'key'
+ *   },
+ * });
+ */
+export function usePostsByKeyQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PostsByKeyQuery, PostsByKeyQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<PostsByKeyQuery, PostsByKeyQueryVariables>(PostsByKeyDocument, options);
+      }
+export function usePostsByKeyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PostsByKeyQuery, PostsByKeyQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<PostsByKeyQuery, PostsByKeyQueryVariables>(PostsByKeyDocument, options);
+        }
+export type PostsByKeyQueryHookResult = ReturnType<typeof usePostsByKeyQuery>;
+export type PostsByKeyLazyQueryHookResult = ReturnType<typeof usePostsByKeyLazyQuery>;
+export type PostsByKeyQueryResult = Apollo.QueryResult<PostsByKeyQuery, PostsByKeyQueryVariables>;

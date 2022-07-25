@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "zavrsni-rad-frontend",
+			"path": "."
+		},
+		{
+			"name": "zavrsni-rad-backend",
+			"path": "..\\zavrsni-rad-backend"
+		}
+	],
+	"settings": {}
+}

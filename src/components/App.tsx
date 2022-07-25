@@ -7,6 +7,7 @@ import styled from "styled-components";
 import Loader from "./Loader";
 import UsersScreen from "./screens/UsersScreen";
 import UserScreen from "./screens/UserScreen";
+import SearchResultsScreen from "./screens/SearchResultsScreen";
 import MeScreen from "./screens/MeScreen";
 
 export default () => {
@@ -26,6 +27,7 @@ export default () => {
             {/* <Route element={<Layout />}> */}
             <Route element={<MeScreen />} path="/" />
             <Route element={<UsersScreen />} path="/users" />
+            <Route element={<SearchResultsScreen searchKey={"e"}/>} path="/search" />
             {/* <Route element={<UserScreen />} path="/user" /> */}
 
           </Routes>

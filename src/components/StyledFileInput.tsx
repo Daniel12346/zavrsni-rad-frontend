@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const StyledFileInput = styled.input`
     padding: 0.5rem;
-    width: 5rem;
+    min-width: 5rem;
     margin-left: 1rem;
     color: transparent;
     ::file-selector-button{
