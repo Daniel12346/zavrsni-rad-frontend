@@ -10,6 +10,7 @@ import Post from "components/Post";
 import { Post as PostType } from "graphql/types";
 import { ReactComponent as AchievementGold } from "images/achievement_gold.svg"
 import StyledUserInfo from "components/StyledUserInfo";
+import { StyledPostList } from "../PostList";
 
 export default () => {
     const { me } = useMe();
@@ -17,12 +18,7 @@ export default () => {
     return <>
         <Nav />
         <ScreenContentContainer backgroundUrl={me?.backgroundImageUrl ?? ""}>
-            {/* <div style={{ background: "red" }}>
-                <span>ProfileImage:</span>
-                <ImageUploader purpose="profile"></ImageUploader>
-                <span>Background:</span>
-                <ImageUploader purpose="background"></ImageUploader>
-            </div> */}
+           
             <StyledUserInfo>
                 <StyledProfileImage isLarge src={me?.profileImageUrl ?? ""} />
                 <span className="userName">{me?.firstName} {me?.lastName}</span>
@@ -32,6 +28,28 @@ export default () => {
                     <AchievementGold />
                     <AchievementGold />
                 </StyledAchievementsContainer>
+                 <div>
+                <span>ProfileImage:</span>
+                <ImageUploader purpose="profile"></ImageUploader>
+                <span>Background:</span>
+                <ImageUploader purpose="background"></ImageUploader>
+            </div> 
+            <StyledListsContainer>
+
+                <span>Following ({me?.following.length})</span>
+                <StyledUserProfileImageList>
+                {me?.following.map(following=>following && <li>
+                    <StyledProfileImage src={following?.profileImageUrl || ""}/>
+                </li>)}
+                </StyledUserProfileImageList>
+
+                <span>Followers ({me?.followers.length})</span>
+                <StyledUserProfileImageList>
+                {me?.followers.map(follower=>follower && <li>
+                    <StyledProfileImage src={follower?.profileImageUrl || ""}/>
+                </li>)}
+                </StyledUserProfileImageList>
+            </StyledListsContainer>
             </StyledUserInfo>
             <StyledPostList>
                 {me?.posts.map(post => <Post post={post as PostType} />)}
@@ -41,19 +59,15 @@ export default () => {
     </>
 }
 
-const StyledPostList = styled.ul`
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    list-style: none;
-    padding-top: 2rem;
-    width: 95%;
-    background: ${({ theme }) => theme.colors.postBg1};
-    max-width: 35rem;
-`
-
 const StyledAchievementsContainer = styled.div`
     width: 100%;
 `
+const StyledUserProfileImageList = styled.ul`
+    display: flex;
+    flex-flow: row wrap;
+`
+const StyledListsContainer = styled.div`
+    display: flex;
+    flex-flow: column nowrap;
 
-
+`

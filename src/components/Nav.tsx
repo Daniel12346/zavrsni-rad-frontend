@@ -1,6 +1,6 @@
 import { useMeQuery } from "graphql/types";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import StyledProfileImage from "./StyledProfileImage";
 import { ReactComponent as NotificationsIcon } from "images/bell-svgrepo-com.svg"
@@ -9,11 +9,15 @@ import { ReactComponent as SettingsIcon } from "images/settings-svgrepo-com.svg"
 
 export default () => {
     const { data } = useMeQuery();
+    const navigate = useNavigate();
+    const handleSearch = (e:any)=>{
+        e?.target?.value && navigate(`/search/${e?.target?.value}`)
+    }
     return (<StyledNav>
         <Link to="/">
             <StyledProfileImage src={data?.me?.profileImageUrl ?? ""} alt={"My profile"}></StyledProfileImage>
         </Link>
-        <StyledInput placeholder="Search people, places..."></StyledInput>
+        <StyledInput onChange={handleSearch} placeholder="Search people and posts"></StyledInput>
         <span className="iconContainer"><NotificationsIcon /></span>
         <span className="iconContainer"><SettingsIcon /></span>
     </StyledNav>)

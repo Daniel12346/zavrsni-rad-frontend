@@ -22,9 +22,9 @@ export default ({ imageUrls }: Props) => {
 
     return <>
         <StyledImagesContainer>
-            <img className="prev" src={imageUrls[prevImageIdx]} alt="" />
+            <img className="prev" onClick={handleGalleryImageClick} src={imageUrls[prevImageIdx]} alt="" />
             <img className="current" src={imageUrls[currentImageIdx]} alt="" />
-            <img className="next" src={imageUrls[nextImageIdx]} alt="" />
+            <img className="next" onClick={handleGalleryImageClick}  src={imageUrls[nextImageIdx]} alt="" />
 
         </StyledImagesContainer>
         <ImageGallery imageUrls={imageUrls} onImageClick={handleGalleryImageClick} />
@@ -42,6 +42,7 @@ const StyledImagesContainer = styled.div`
     >img{
         position: absolute;
         max-width: 40%;
+        max-height: 60%;
     }
     img.prev{
         left: 1rem;

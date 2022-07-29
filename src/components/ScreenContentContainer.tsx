@@ -15,6 +15,8 @@ const ScreenContentContainer = styled.div<Props>`
     background-size: 100vw 100vh;
     background-attachment: fixed;
     background-position: center;
+
+    
 `;
 
 export default ScreenContentContainer;
