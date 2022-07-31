@@ -5,6 +5,7 @@ import styled from "styled-components";
 import StyledProfileImage from "./StyledProfileImage";
 import { ReactComponent as NotificationsIcon } from "images/bell-svgrepo-com.svg"
 import { ReactComponent as SettingsIcon } from "images/settings-svgrepo-com.svg"
+import { StyledLink } from "./StyledLink";
 
 
 export default () => {
@@ -14,11 +15,12 @@ export default () => {
         e?.target?.value && navigate(`/search/${e?.target?.value}`)
     }
     return (<StyledNav>
-        <Link to="/">
+        <StyledLink to="/me">
             <StyledProfileImage src={data?.me?.profileImageUrl ?? ""} alt={"My profile"}></StyledProfileImage>
-        </Link>
+            <span>{data?.me?.firstName}</span>
+        </StyledLink>
         <StyledInput onChange={handleSearch} placeholder="Search people and posts"></StyledInput>
-        <span className="iconContainer"><NotificationsIcon /></span>
+        {/* <span className="iconContainer"><NotificationsIcon /></span> */}
         <span className="iconContainer"><SettingsIcon /></span>
     </StyledNav>)
 }
@@ -64,4 +66,5 @@ const StyledInput = styled.input`
     }
 
 `
+
 

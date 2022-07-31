@@ -6,7 +6,7 @@ interface Props {
 const StyledProfileImage = styled.img<Props>`
     width: ${({ isLarge }) => isLarge ? "4rem" : "2rem"};
     height: ${({ isLarge }) => isLarge ? "4rem" : "2rem"};
-    border-radius: 50%
+    border-radius: 50%;
 `;
 
 export default StyledProfileImage;

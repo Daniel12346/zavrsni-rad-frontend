@@ -40,6 +40,7 @@ export type Mutation = {
 export type MutationCreatePostArgs = {
   additionalImageFiles?: InputMaybe<Array<InputMaybe<Scalars['Upload']>>>;
   mainImageFile?: InputMaybe<Scalars['Upload']>;
+  restrictedTo?: InputMaybe<Scalars['String']>;
   text?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
 };
@@ -99,6 +100,7 @@ export type Post = {
   id: Scalars['ID'];
   imageUrls: Array<Maybe<Scalars['String']>>;
   mainImageUrl?: Maybe<Scalars['String']>;
+  restrictedTo?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
 };
@@ -112,6 +114,7 @@ export type Query = {
   user?: Maybe<User>;
   users: Array<Maybe<User>>;
   usersByKey?: Maybe<Array<Maybe<User>>>;
+  viewablePosts?: Maybe<Array<Maybe<Post>>>;
 };
 
 
@@ -134,6 +137,11 @@ export type QueryUsersByKeyArgs = {
   key?: InputMaybe<Scalars['String']>;
 };
 
+
+export type QueryViewablePostsArgs = {
+  showPublicPosts?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type User = {
   __typename?: 'User';
   backgroundImageUrl?: Maybe<Scalars['String']>;
@@ -154,7 +162,7 @@ export type UserInput = {
 
 export type UserInfoFragment = { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null };
 
-export type PostInfoFragment = { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string } };
+export type PostInfoFragment = { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } };
 
 export type LogInMutationVariables = Exact<{
   email: Scalars['String'];
@@ -190,7 +198,7 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string } } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } } };
 
 export type FollowUserMutationVariables = Exact<{
   id?: InputMaybe<Scalars['ID']>;
@@ -214,7 +222,7 @@ export type UserQueryVariables = Exact<{
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null, posts: Array<{ __typename?: 'Post', mainImageUrl?: string | null, imageUrls: Array<string | null>, title?: string | null, text?: string | null } | null>, followers: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null>, following: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null> } | null };
 
 export type UsersByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']>;
@@ -228,7 +236,14 @@ export type PostsByKeyQueryVariables = Exact<{
 }>;
 
 
-export type PostsByKeyQuery = { __typename?: 'Query', postsByKey?: Array<{ __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string } } | null> | null };
+export type PostsByKeyQuery = { __typename?: 'Query', postsByKey?: Array<{ __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } } | null> | null };
+
+export type ViewablePostsQueryVariables = Exact<{
+  showPublicPosts?: InputMaybe<Scalars['Boolean']>;
+}>;
+
+
+export type ViewablePostsQuery = { __typename?: 'Query', viewablePosts?: Array<{ __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } } | null> | null };
 
 export const UserInfoFragmentDoc = gql`
     fragment UserInfo on User {
@@ -246,6 +261,7 @@ export const PostInfoFragmentDoc = gql`
     id
     firstName
     lastName
+    profileImageUrl
   }
   createdAt
   mainImageUrl
@@ -519,6 +535,18 @@ export const UserDocument = gql`
     query user($id: String) {
   user(id: $id) {
     ...UserInfo
+    posts {
+      mainImageUrl
+      imageUrls
+      title
+      text
+    }
+    followers {
+      ...UserInfo
+    }
+    following {
+      ...UserInfo
+    }
   }
 }
     ${UserInfoFragmentDoc}`;
@@ -620,3 +648,38 @@ export function usePostsByKeyLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type PostsByKeyQueryHookResult = ReturnType<typeof usePostsByKeyQuery>;
 export type PostsByKeyLazyQueryHookResult = ReturnType<typeof usePostsByKeyLazyQuery>;
 export type PostsByKeyQueryResult = Apollo.QueryResult<PostsByKeyQuery, PostsByKeyQueryVariables>;
+export const ViewablePostsDocument = gql`
+    query viewablePosts($showPublicPosts: Boolean) {
+  viewablePosts(showPublicPosts: $showPublicPosts) {
+    ...PostInfo
+  }
+}
+    ${PostInfoFragmentDoc}`;
+
+/**
+ * __useViewablePostsQuery__
+ *
+ * To run a query within a React component, call `useViewablePostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useViewablePostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useViewablePostsQuery({
+ *   variables: {
+ *      showPublicPosts: // value for 'showPublicPosts'
+ *   },
+ * });
+ */
+export function useViewablePostsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<ViewablePostsQuery, ViewablePostsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useQuery<ViewablePostsQuery, ViewablePostsQueryVariables>(ViewablePostsDocument, options);
+      }
+export function useViewablePostsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<ViewablePostsQuery, ViewablePostsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return ApolloReactHooks.useLazyQuery<ViewablePostsQuery, ViewablePostsQueryVariables>(ViewablePostsDocument, options);
+        }
+export type ViewablePostsQueryHookResult = ReturnType<typeof useViewablePostsQuery>;
+export type ViewablePostsLazyQueryHookResult = ReturnType<typeof useViewablePostsLazyQuery>;
+export type ViewablePostsQueryResult = Apollo.QueryResult<ViewablePostsQuery, ViewablePostsQueryVariables>;

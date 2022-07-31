@@ -1,50 +1,74 @@
 import React from "react";
+import StyledProfileImage from "components/StyledProfileImage";
+import Nav from "components/Nav";
+import ScreenContentContainer from "../ScreenContentContainer";
+import CreatePostButton from "components/CreatePostButton";
 import styled from "styled-components";
-import { useUserQuery } from "graphql/types";
+import Post from "components/Post";
+import { Post as PostType, useUserQuery } from "graphql/types";
+import { ReactComponent as AchievementGold } from "images/achievement_gold.svg"
+import StyledUserInfo from "components/StyledUserInfo";
+import { StyledPostList } from "../PostList";
+import { useParams } from "react-router-dom";
+import Loader from "components/Loader";
 
-//TODO: router variable
-interface Props {
-    userId: string;
-}
-export default ({ userId }: Props) => {
-    const { data, loading, error } = useUserQuery({ variables: { id: userId } });
+
+export default () => {
+    const {userId} = useParams();
+    const {data, loading, error} = useUserQuery({variables:{id: userId}});
     const user = data?.user;
 
-    // if (!user) return null;
-    // return <>
-    //     <Nav />
-    //     <ScreenContentContainer>
-    //         <StyledUserInfo>
-    //             <StyledProfileImage src={user.profileImageUrl ?? ""} />
-    //             <StyledUserDetails>
-    //                 <span>{`${me.firstName} ${.lastName}`}</span>
-    //                 <span>Split</span>
-    //             </StyledUserDetails>
-    //             <button>Follow</button>
-    //             <div style={{ width: "100%" }}>Achievements:</div>
-    //         </StyledUserInfo>
-    //         <div>
+    return <>
+        <Nav />
+        <ScreenContentContainer backgroundUrl={user?.backgroundImageUrl ?? ""}>
+            {loading && <Loader/>}
+            {user && 
+            <>
+                <StyledUserInfo>
+                    <StyledProfileImage isLarge src={user.profileImageUrl ?? ""} />
+                    <span className="userName">{user.firstName} {user.lastName}</span>
+                    <StyledAchievementsContainer>
+                        {/* TODO: */}
+                        <AchievementGold />
+                        <AchievementGold />
+                        <AchievementGold />
+                    </StyledAchievementsContainer>
+                <StyledListsContainer>
+                    <span>Following ({user.following.length})</span>
 
-    //         </div>
-    //     </ScreenContentContainer>
-    // </>
+                    <StyledUserProfileImageList>
+                    {user?.following.map(following=>following && <li>
+                        <StyledProfileImage src={following?.profileImageUrl || ""}/>
+                    </li>)}
+                    </StyledUserProfileImageList>
+
+                    <span>Followers ({user?.followers.length})</span>
+                    <StyledUserProfileImageList>
+                    {user?.followers.map(follower=>follower && <li>
+                        <StyledProfileImage src={follower?.profileImageUrl || ""}/>
+                    </li>)}
+                    </StyledUserProfileImageList>
+                </StyledListsContainer>
+
+                </StyledUserInfo>
+                <StyledPostList>
+                    {user?.posts.map(post => <Post post={{...post,author:user} as PostType} />)}
+                </StyledPostList>
+            </>}
+        </ScreenContentContainer>
+        <CreatePostButton />
+    </>
 }
 
-const StyledUserInfo = styled.div`
-    background: ${({ theme }) => theme.colors.postBg3};
-    width: 75%;
-    max-width: 20rem;
+const StyledAchievementsContainer = styled.div`
+    width: 100%;
+`
+const StyledUserProfileImageList = styled.ul`
     display: flex;
     flex-flow: row wrap;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
 `
-const StyledUserDetails = styled.div`
+const StyledListsContainer = styled.div`
     display: flex;
     flex-flow: column nowrap;
-    width: 60%;
-    align-items: flex-start;
+
 `
-//TODO:
-//const StyledUserAchievements

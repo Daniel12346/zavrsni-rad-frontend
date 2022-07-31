@@ -7,13 +7,12 @@ export default createGlobalStyle`
     margin: 0;
     border: none;
     /*TODO: font*/
-    font-family: "serif";
+    font-family: sans-serif;
     overflow-x: hidden;
 }
 
 button{
     font-family: "sans-serif";
-
 }
 
 body{
@@ -22,4 +21,9 @@ body{
 form{
 
 }
+
+p{
+    font-family:serif;
+}
+
 `;

@@ -28,6 +28,7 @@ export default () => {
             <Route element={<MeScreen />} path="/me" />
             <Route element={<InitialScreen />} path="/"/>
             <Route element={<UsersScreen />} path="/users" />
+            <Route element={<UserScreen />} path="/users/:userId" />
             <Route element={<SearchResultsScreen/>} path="/search/:searchkey" />
           </Routes>
 

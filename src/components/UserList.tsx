@@ -4,6 +4,7 @@ import StyledUserInfo from "components/StyledUserInfo";
 import StyledProfileImage from "components/StyledProfileImage";
 import UserFollowOptions from "components/styled/UserFollowOptions";
 import styled from "styled-components";
+import { StyledLink } from "./StyledLink";
 
 interface Props {
     users: Maybe<User[]>;
@@ -11,8 +12,10 @@ interface Props {
 export default ({ users }: Props) => <StyledUserList>{users?.map(user => user &&
     <li key={user.id}>
         <StyledUserInfo>
-            <StyledProfileImage src={user.profileImageUrl || ""} />
-            <span className="userName">{user.firstName} {user.lastName}</span>
+            <StyledLink to={"/users/" + user.id}>
+                <StyledProfileImage src={user.profileImageUrl || ""} />
+                <span className="userName">{user.firstName} {user.lastName}</span>
+            </StyledLink>
             <UserFollowOptions user={user as User} />
         </StyledUserInfo>
     </li>
@@ -40,3 +43,4 @@ const StyledUserList = styled.ul`
        
     }
 `
+

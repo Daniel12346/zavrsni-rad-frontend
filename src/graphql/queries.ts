@@ -36,7 +36,20 @@ export const USER_QUERY = gql`
   query user($id: String){
     user(id:$id){
       ...UserInfo
+      posts{
+        mainImageUrl
+        imageUrls 
+        title
+        text              
+      }
+      followers{
+        ...UserInfo
+      }
+      following{
+        ...UserInfo
+      }
     }
+    
   }
   ${UserInfo}
 
@@ -53,6 +66,15 @@ export const USERS_BY_KEY_QUERY = gql`
 export const POSTS_BY_KEY_QUERY = gql`
   query postsByKey($key: String){
     postsByKey(key:$key){
+      ...PostInfo
+    }
+  }
+  ${PostInfo}
+`
+
+export const VIEWABLE_POSTS_QUERY = gql`
+  query viewablePosts($showPublicPosts: Boolean){
+    viewablePosts(showPublicPosts: $showPublicPosts){
       ...PostInfo
     }
   }

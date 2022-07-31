@@ -52,7 +52,7 @@ export default () => {
             </StyledListsContainer>
             </StyledUserInfo>
             <StyledPostList>
-                {me?.posts.map(post => <Post post={post as PostType} />)}
+                {me?.posts.map(post => <Post post={{...post,author: me} as PostType} />)}
             </StyledPostList>
         </ScreenContentContainer>
         <CreatePostButton />

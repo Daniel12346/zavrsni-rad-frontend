@@ -14,6 +14,7 @@ export const theme = {
 
     //?
     textBasic: "hsl(158, 24%, 22%)",
+    textLighter: "hsl(158, 16%, 40%)",
     text1: "hsl(158, 48%, 60%)",
     text2: "hsla(158, 44%, 53%, 1)",
     text3: "hsla(168, 94%, 29%, 1)",

@@ -11,6 +11,7 @@ export default ()=>{
     const {searchkey:key} = useParams();
     console.log(key);
     const {data:usersData} = useUsersByKeyQuery({variables:{key}});
+    //TODO: only viewable posts
     const {data:postsData} = usePostsByKeyQuery({variables:{key}});
 
     usersData?.usersByKey && console.log(usersData.usersByKey);

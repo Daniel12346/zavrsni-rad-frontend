@@ -17,6 +17,7 @@ export const PostInfo = gql`
       id
       firstName
       lastName
+      profileImageUrl
     }
     createdAt
     mainImageUrl
