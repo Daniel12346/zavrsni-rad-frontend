@@ -67,13 +67,9 @@ export default ({ mode, setMode }: any) => {
         <StyledButton isCurrentMode={mode === "logIn"} type="button" onClick={() => setMode("logIn")}>Log in</StyledButton>
         <StyledButton isCurrentMode={mode === "signUp"} type="button" onClick={() => setMode("signUp")}>Sign up</StyledButton>
       </StyledButtonContainer>
-      {logInError && <span>{logInError.message}</span>}
-      {loading && <Loader></Loader>}
+      
 
-      {signUpError && <span>{signUpError.message}</span>}
-      {loading_s && <Loader></Loader>}
-
-      <div>
+      <div className="formInside">
         <label>
           Email
           <input
@@ -109,8 +105,13 @@ export default ({ mode, setMode }: any) => {
             onChange={e => setPassword((e.target as HTMLInputElement).value)}
           />
         </label>
-        <StyledButton id="logIn" type="submit">{mode === "logIn" ? "log in" : "sign up"}</StyledButton>
+        <StyledButton id="submitButton" type="submit">{mode === "logIn" ? "log in" : "sign up"}</StyledButton>
       </div>
+      {logInError && <span>{logInError.message}</span>}
+      {loading && <Loader></Loader>}
+
+      {signUpError && <span>{signUpError.message}</span>}
+      {loading_s && <Loader></Loader>}
     </StyledForm >
   );
 
@@ -122,8 +123,7 @@ const StyledForm = styled.form`
   display: flex;
   flex-flow: column nowrap;
   max-width: 30rem;
-  min-height: 12rem;
-  justify-content: space-between;
+  justify-content: space-evenly;
   label{
     display: flex;
    flex-flow: column nowrap;
@@ -139,18 +139,18 @@ const StyledForm = styled.form`
   }
   button{
     color: white;
+    border-radius: 3px;
   }
-  #form-inside{
-    background: ${({ theme }) => theme.colors.primary1};
+  .formInside{
     padding: 0;
     display: flex;
     flex-flow: column wrap;
     min-height: 80%;
     justify-content: space-evenly;
     padding: 1rem;
-    #logIn{
-      align-self: center;
-      background: ${({ theme }) => theme.colors.primary3};
+    #submitButton{
+      background: ${({ theme }) => theme.colors.primary4};
+      margin-top: 5%;
        min-width: 20%;
     }
 }

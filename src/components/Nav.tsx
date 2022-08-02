@@ -3,7 +3,6 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import StyledProfileImage from "./StyledProfileImage";
-import { ReactComponent as NotificationsIcon } from "images/bell-svgrepo-com.svg"
 import { ReactComponent as SettingsIcon } from "images/settings-svgrepo-com.svg"
 import { StyledLink } from "./StyledLink";
 
@@ -15,13 +14,18 @@ export default () => {
         e?.target?.value && navigate(`/search/${e?.target?.value}`)
     }
     return (<StyledNav>
+        <StyledLink to="/">
+            home
+        </StyledLink>
         <StyledLink to="/me">
             <StyledProfileImage src={data?.me?.profileImageUrl ?? ""} alt={"My profile"}></StyledProfileImage>
             <span>{data?.me?.firstName}</span>
         </StyledLink>
         <StyledInput onChange={handleSearch} placeholder="Search people and posts"></StyledInput>
         {/* <span className="iconContainer"><NotificationsIcon /></span> */}
-        <span className="iconContainer"><SettingsIcon /></span>
+        <StyledLink to="/settings">
+           <span className="iconContainer"><SettingsIcon /></span>
+        </StyledLink>
     </StyledNav>)
 }
 

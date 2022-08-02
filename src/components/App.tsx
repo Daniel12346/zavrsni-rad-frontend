@@ -10,6 +10,7 @@ import UserScreen from "./screens/UserScreen";
 import SearchResultsScreen from "./screens/SearchResultsScreen";
 import MeScreen from "./screens/MeScreen";
 import InitialScreen from "./screens/InitialScreen";
+import SettingsScreen from "./screens/SettingsScreen";
 
 export default () => {
   const { data, error, loading } = useMeQuery();
@@ -25,9 +26,10 @@ export default () => {
         </StyledMainLoaderContainer> : !error && data?.me ?
 
           <Routes>
-            <Route element={<MeScreen />} path="/me" />
             <Route element={<InitialScreen />} path="/"/>
+            <Route element={<MeScreen />} path="/me" />
             <Route element={<UsersScreen />} path="/users" />
+            <Route element={<SettingsScreen/>} path="/settings" />
             <Route element={<UserScreen />} path="/users/:userId" />
             <Route element={<SearchResultsScreen/>} path="/search/:searchkey" />
           </Routes>

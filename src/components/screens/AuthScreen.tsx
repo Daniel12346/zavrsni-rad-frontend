@@ -20,10 +20,10 @@ const StyledAuthContainer = styled.div`
     margin-top: 8vh;
     display: flex;
     min-height: 50vh;
-    width: 50vw;
+    max-width: 30rem;
     flex-flow: row wrap;
     gap: 2rem;
-    justify-content: space-between;
+    justify-content: center;
     span{
         display: flex;
         padding: 1rem;
@@ -34,6 +34,9 @@ const StyledAuthContainer = styled.div`
         max-width: 20rem;
         min-width:  5rem;
     }
+    background: ${({ theme })=> theme.colors.background1};
+    border-radius: 10px;
+
 `
 
 
@@ -43,9 +46,9 @@ const StyledAuthScreenContainer = styled.div`
     align-items: center;
     justify-self: center;
     padding-top: 7vmin;
+    height: 100vh;
+    background: ${({ theme })=> theme.colors.primary3};
     >*{
         width: 100%;
-        min-width: 300px;
-        max-width: 55vmax;
     }
 `
