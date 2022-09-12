@@ -1,3 +1,4 @@
+import CreatePostButton from "components/CreatePostButton";
 import Nav from "components/Nav";
 import PostList from "components/PostList";
 import ScreenContentContainer from "components/ScreenContentContainer";
@@ -23,6 +24,7 @@ export default ()=>{
         <UserList users={usersData?.usersByKey as User[] ?? null}></UserList>
         <StyledListHeading>POSTS</StyledListHeading>
         <PostList posts={postsData?.postsByKey as Post[] ?? null}></PostList>
+        <CreatePostButton />
     </StyledScreenContainer>
     </>
 }

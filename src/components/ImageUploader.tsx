@@ -3,7 +3,7 @@ import { ME_QUERY } from "graphql/queries";
 import { useUploadImageMutation } from "graphql/types";
 import StyledFileInput from "./StyledFileInput";
 
-//TODO: styling 
+
 export default ({ purpose }: Props) => {
     const [uploadImage, { error, loading }] = useUploadImageMutation({ refetchQueries: [{ query: ME_QUERY }] });
     const [isValid, setIsvalid] = useState(true);

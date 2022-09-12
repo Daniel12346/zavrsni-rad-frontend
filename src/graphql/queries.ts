@@ -18,7 +18,8 @@ export const ME_QUERY = gql`
         mainImageUrl
         imageUrls 
         title
-        text              
+        text      
+        createdAt        
       }
       followers{
         ...UserInfo

@@ -19,7 +19,6 @@ export default () => {
     <>
       <GlobalStyle />
       {error && <span>{error.message.toUpperCase() !== "NOT AUTHENTICATED" && error.message}</span>}
-      {console.log(data)}
       {loading ?
         <StyledMainLoaderContainer>
           <Loader />

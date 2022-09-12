@@ -195,6 +195,7 @@ export type CreatePostMutationVariables = Exact<{
   additionalImageFiles?: InputMaybe<Array<InputMaybe<Scalars['Upload']>> | InputMaybe<Scalars['Upload']>>;
   title?: InputMaybe<Scalars['String']>;
   text?: InputMaybe<Scalars['String']>;
+  restrictedTo?: InputMaybe<Scalars['String']>;
 }>;
 
 
@@ -215,7 +216,7 @@ export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'Us
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null, posts: Array<{ __typename?: 'Post', mainImageUrl?: string | null, imageUrls: Array<string | null>, title?: string | null, text?: string | null } | null>, followers: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null>, following: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null> } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null, posts: Array<{ __typename?: 'Post', mainImageUrl?: string | null, imageUrls: Array<string | null>, title?: string | null, text?: string | null, createdAt: any } | null>, followers: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null>, following: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null> } | null };
 
 export type UserQueryVariables = Exact<{
   id?: InputMaybe<Scalars['String']>;
@@ -378,12 +379,13 @@ export type UploadImageMutationHookResult = ReturnType<typeof useUploadImageMuta
 export type UploadImageMutationResult = Apollo.MutationResult<UploadImageMutation>;
 export type UploadImageMutationOptions = Apollo.BaseMutationOptions<UploadImageMutation, UploadImageMutationVariables>;
 export const CreatePostDocument = gql`
-    mutation createPost($mainImageFile: Upload, $additionalImageFiles: [Upload], $title: String, $text: String) {
+    mutation createPost($mainImageFile: Upload, $additionalImageFiles: [Upload], $title: String, $text: String, $restrictedTo: String) {
   createPost(
     mainImageFile: $mainImageFile
     additionalImageFiles: $additionalImageFiles
     title: $title
     text: $text
+    restrictedTo: $restrictedTo
   ) {
     ...PostInfo
   }
@@ -408,6 +410,7 @@ export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, C
  *      additionalImageFiles: // value for 'additionalImageFiles'
  *      title: // value for 'title'
  *      text: // value for 'text'
+ *      restrictedTo: // value for 'restrictedTo'
  *   },
  * });
  */
@@ -494,6 +497,7 @@ export const MeDocument = gql`
       imageUrls
       title
       text
+      createdAt
     }
     followers {
       ...UserInfo

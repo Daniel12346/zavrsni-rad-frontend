@@ -10,7 +10,6 @@ import StyledFileInput from "./StyledFileInput";
 
 interface CreatePostModalProps {
     isModalDisplayed: boolean;
-    //TODO: function typing
     setIsModalDisplayed?: any;
 }
 
@@ -19,6 +18,7 @@ export default ({ isModalDisplayed, setIsModalDisplayed }: CreatePostModalProps)
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
     const [mainImageFile, setMainImageFile] = useState<any>();
+    const [restrictedTo, setRestrictedTo] = useState<"FOLLOWERS" | "PRIVATE" | null>();
     const [additionalImageFiles, setAdditionalImageFiles] = useState<any[]>([]);
     const [createPost, { loading, error }] = useCreatePostMutation({ refetchQueries: [{ query: ME_QUERY }], onCompleted: () => { setIsModalDisplayed(false) } });
 
@@ -26,7 +26,7 @@ export default ({ isModalDisplayed, setIsModalDisplayed }: CreatePostModalProps)
     return <StyledModalBackdrop isModalDisplayed={isModalDisplayed}>
         <StyledModal isModalDisplayed={isModalDisplayed} onSubmit={(e) => {
             e.preventDefault();
-            createPost({ variables: { title, text, mainImageFile, additionalImageFiles } });
+            createPost({ variables: { title, text, mainImageFile, additionalImageFiles, restrictedTo } });
         }}>
             <Row alignItems="center" justifyContent="space-between">
                 <span className="createNewPostSpan">Create new post:</span>
@@ -36,7 +36,16 @@ export default ({ isModalDisplayed, setIsModalDisplayed }: CreatePostModalProps)
                     </button>
                 </div>
             </Row>
-            <input className="title" name="title" placeholder="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Row justifyContent="space-between" alignItems="center" wrap="wrap">
+                <input className="title" name="title" placeholder="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                <StyledRestrictionSelectContainerLabel htmlFor="restrictedTo">Restrict to: 
+                    <select onClick={(e:any)=>setRestrictedTo(e.target.value || null)} name="restrictedTo" id="restrictedTo">
+                        <option value="PRIVATE">Myself</option>
+                        <option value="FOLLOWERS">My followers</option>
+                        <option value="">Public</option>
+                    </select>
+                </StyledRestrictionSelectContainerLabel>
+            </Row>
             <MainImageFileInputAndPreviewContainer isImageUploaded={!!mainImageFile}>
                 <label htmlFor="mainImageFile">Select main image:</label>
                 <StyledFileInput name="mainImageFile" placeholder="Select" type="file" onChange={({ target: { validity, files: [file] } }: any) => {
@@ -60,7 +69,6 @@ export default ({ isModalDisplayed, setIsModalDisplayed }: CreatePostModalProps)
             {/* creating local urls for preview, the urls that are stored in the database
             are created during the upload */}
 
-            {/* TODO: grid (ili noc boje ime za ovo) */}
             <StyledGalleryAndCreationConfirmationButtonContainer>
                 <ImageGallery imageUrls={additionalImageFiles.map(URL.createObjectURL)} />
                 <div className="buttonContainer">
@@ -74,6 +82,8 @@ export default ({ isModalDisplayed, setIsModalDisplayed }: CreatePostModalProps)
         </StyledModal>
     </StyledModalBackdrop>
 }
+
+
 
 const StyledModalBackdrop = styled.div<CreatePostModalProps>`
     background: hsla(158, 26%, 5%, 0.5);
@@ -125,13 +135,15 @@ const StyledModal = styled.form<CreatePostModalProps>`
     }
 
     label{
-        width: 20%;
         min-width: 3rem;
         display: inline-block;
     }
     .buttonContainer > button{
         background: transparent;
         cursor: pointer;
+    }
+    .title{
+        min-width: 55%;
     }
 `
 
@@ -184,6 +196,10 @@ const Row = styled.div<RowProps>`
     align-items: ${({ alignItems }) => alignItems || "initial"};   
 `
 
-// StyledLoadingAndErrorIndicator = styled.div`
-    
-// `
+const StyledRestrictionSelectContainerLabel = styled.label`
+font-size: 0.8rem;
+display: flex;
+min-width: 4rem;
+background: transparent;
+margin-bottom: 1rem;
+`

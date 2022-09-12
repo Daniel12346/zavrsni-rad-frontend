@@ -10,11 +10,13 @@ import { StyledLink } from "./StyledLink";
 interface PostProps {
     post: Post
 }
-export default ({ post: { imageUrls, title, text, mainImageUrl, author } }: PostProps) =>{
+export default ({ post: { imageUrls, title, text, mainImageUrl, author, createdAt } }: PostProps) =>{
     const {me} = useMe();
 
     return (<StyledPostContainer>
+        
     <span className="postTitle">{title}</span>
+    <span className="createdAt">{new Date(createdAt).toLocaleDateString()}</span>
     {me?.id && author?.id !== me?.id &&
         <div className="postAuthorInfo">
         <StyledLink to={"/users/" + author.id}>
@@ -63,6 +65,12 @@ const StyledPostContainer = styled.li`
         margin-bottom: 1.2rem;
         background: unset;
         /* order: 1; */
+    }
+    .createdAt{
+        align-self: flex-end;
+        margin-right: 0.5rem;
+        color: ${({ theme }) => theme.colors.textBasic};
+
     }
     .postText{
         align-self: flex-start;

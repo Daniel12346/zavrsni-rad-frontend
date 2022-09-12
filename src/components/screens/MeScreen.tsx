@@ -8,9 +8,8 @@ import CreatePostButton from "components/CreatePostButton";
 import styled from "styled-components";
 import Post from "components/Post";
 import { Post as PostType } from "graphql/types";
-import { ReactComponent as AchievementGold } from "images/achievement_gold.svg"
 import StyledUserInfo from "components/StyledUserInfo";
-import { StyledPostList } from "../PostList";
+import PostList, { StyledPostList } from "../PostList";
 
 export default () => {
     const { me } = useMe();
@@ -22,18 +21,12 @@ export default () => {
             <StyledUserInfo>
                 <StyledProfileImage isLarge src={me?.profileImageUrl ?? ""} />
                 <span className="userName">{me?.firstName} {me?.lastName}</span>
-                <StyledAchievementsContainer>
-                    {/* TODO: */}
-                    <AchievementGold />
-                    <AchievementGold />
-                    <AchievementGold />
-                </StyledAchievementsContainer>
-                 <div>
+             <div>
                 <span>ProfileImage:</span>
                 <ImageUploader purpose="profile"></ImageUploader>
                 <span>Background:</span>
                 <ImageUploader purpose="background"></ImageUploader>
-            </div> 
+             </div> 
             <StyledListsContainer>
 
                 <span>Following ({me?.following.length})</span>
@@ -43,17 +36,18 @@ export default () => {
                 </li>)}
                 </StyledUserProfileImageList>
 
-                <span>Followers ({me?.followers.length})</span>
+                <span>Followers ({me?.followers?.length})</span>
                 <StyledUserProfileImageList>
-                {me?.followers.map(follower=>follower && <li>
+                {me?.followers?.map(follower=>follower && <li>
                     <StyledProfileImage src={follower?.profileImageUrl || ""}/>
                 </li>)}
                 </StyledUserProfileImageList>
             </StyledListsContainer>
             </StyledUserInfo>
-            <StyledPostList>
+            {/* <StyledPostList>
                 {me?.posts.map(post => <Post post={{...post,author: me} as PostType} />)}
-            </StyledPostList>
+            </StyledPostList> */}
+            <PostList posts={(me?.posts.map(post=>({...post, author:me})))as PostType[]}></PostList>
         </ScreenContentContainer>
         <CreatePostButton />
     </>

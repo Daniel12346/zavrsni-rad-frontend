@@ -39,8 +39,8 @@ export const UPLOAD_IMAGE_MUTATION = gql`
 
 
 export const CREATE_POST_MUTATTION = gql`
-  mutation createPost($mainImageFile: Upload, $additionalImageFiles: [Upload], $title: String, $text: String){
-    createPost(mainImageFile:$mainImageFile, additionalImageFiles:$additionalImageFiles, title:$title, text:$text){
+  mutation createPost($mainImageFile: Upload, $additionalImageFiles: [Upload], $title: String, $text: String, $restrictedTo: String){
+    createPost(mainImageFile:$mainImageFile, additionalImageFiles:$additionalImageFiles, title:$title, text:$text, restrictedTo:$restrictedTo){
       ...PostInfo
     }
   }

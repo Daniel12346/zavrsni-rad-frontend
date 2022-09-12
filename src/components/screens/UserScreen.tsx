@@ -42,9 +42,9 @@ export default () => {
                     </li>)}
                     </StyledUserProfileImageList>
 
-                    <span>Followers ({user?.followers.length})</span>
+                    <span>Followers ({user?.followers?.length})</span>
                     <StyledUserProfileImageList>
-                    {user?.followers.map(follower=>follower && <li>
+                    {user?.followers?.map(follower=>follower && <li>
                         <StyledProfileImage src={follower?.profileImageUrl || ""}/>
                     </li>)}
                     </StyledUserProfileImageList>
