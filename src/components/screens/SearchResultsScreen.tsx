@@ -1,6 +1,7 @@
 import CreatePostButton from "components/CreatePostButton";
+import { useMe } from "components/hooks/me";
 import Nav from "components/Nav";
-import PostList from "components/PostList";
+import RestrictedPostList from "components/RestrictedPostList";
 import ScreenContentContainer from "components/ScreenContentContainer";
 import UserList from "components/UserList";
 import { Post, usePostsByKeyQuery, User, useUsersByKeyQuery } from "graphql/types";
@@ -12,18 +13,18 @@ export default ()=>{
     const {searchkey:key} = useParams();
     console.log(key);
     const {data:usersData} = useUsersByKeyQuery({variables:{key}});
-    //TODO: only viewable posts
     const {data:postsData} = usePostsByKeyQuery({variables:{key}});
+    const {me} = useMe();
 
     usersData?.usersByKey && console.log(usersData.usersByKey);
     postsData?.postsByKey && console.log(postsData.postsByKey);
     return <>
     <Nav/>
-    <StyledScreenContainer>
+    <StyledScreenContainer backgroundUrl={me?.backgroundImageUrl ?? undefined}>
         <StyledListHeading>USERS</StyledListHeading>
         <UserList users={usersData?.usersByKey as User[] ?? null}></UserList>
         <StyledListHeading>POSTS</StyledListHeading>
-        <PostList posts={postsData?.postsByKey as Post[] ?? null}></PostList>
+        <RestrictedPostList posts={postsData?.postsByKey as Post[] ?? null}></RestrictedPostList>
         <CreatePostButton />
     </StyledScreenContainer>
     </>

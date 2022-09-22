@@ -24,5 +24,6 @@ export const PostInfo = gql`
     title
     text
     imageUrls
+    restrictedTo
   }
 `

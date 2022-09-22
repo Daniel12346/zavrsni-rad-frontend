@@ -18,20 +18,19 @@ export default ({ isModalDisplayed, setIsModalDisplayed }: CreatePostModalProps)
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
     const [mainImageFile, setMainImageFile] = useState<any>();
-    const [restrictedTo, setRestrictedTo] = useState<"FOLLOWERS" | "PRIVATE" | null>();
+    const [restrictedTo, setRestrictedTo] = useState<"FOLLOWERS" | "PRIVATE" | null>("PRIVATE");
     const [additionalImageFiles, setAdditionalImageFiles] = useState<any[]>([]);
     const [createPost, { loading, error }] = useCreatePostMutation({ refetchQueries: [{ query: ME_QUERY }], onCompleted: () => { setIsModalDisplayed(false) } });
 
 
     return <StyledModalBackdrop isModalDisplayed={isModalDisplayed}>
-        <StyledModal isModalDisplayed={isModalDisplayed} onSubmit={(e) => {
-            e.preventDefault();
-            createPost({ variables: { title, text, mainImageFile, additionalImageFiles, restrictedTo } });
-        }}>
+        <StyledModal isModalDisplayed={isModalDisplayed}>
             <Row alignItems="center" justifyContent="space-between">
                 <span className="createNewPostSpan">Create new post:</span>
                 <div className="buttonContainer">
-                    <button onClick={() => setIsModalDisplayed(false)}>
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        setIsModalDisplayed(false)}}>
                         <ExitPostCreationButton />
                     </button>
                 </div>
@@ -72,7 +71,10 @@ export default ({ isModalDisplayed, setIsModalDisplayed }: CreatePostModalProps)
             <StyledGalleryAndCreationConfirmationButtonContainer>
                 <ImageGallery imageUrls={additionalImageFiles.map(URL.createObjectURL)} />
                 <div className="buttonContainer">
-                    <button type="submit"><ConfirmPostCreationButton /></button>
+                    <button><ConfirmPostCreationButton  onClick={(e) => {
+            e.preventDefault();
+            createPost({ variables: { title, text, mainImageFile, additionalImageFiles, restrictedTo } });
+        }}/></button>
                 </div>
             </StyledGalleryAndCreationConfirmationButtonContainer>
             <Row alignItems="center" justifyContent="center">

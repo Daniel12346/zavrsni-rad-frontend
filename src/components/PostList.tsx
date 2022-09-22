@@ -2,14 +2,13 @@ import React from "react";
 import { Post as PostType} from "graphql/types";
 import styled from "styled-components";
 import Post from "./Post";
-import { isConstructorDeclaration } from "typescript";
 
 interface Props {
     posts: PostType[]
 }
 
 export default ({posts}: Props)=><StyledPostList>
-    {posts?.map((post: PostType) => <Post post={post as PostType} />)
+    {posts?.map((post: PostType) => <Post key={post.id} post={post as PostType} />)
         .sort((a, b) => {
             const dateA = a && new Date(a.props.post.createdAt);
             const dateB = b && new Date(b.props.post.createdAt);

@@ -54,3 +54,11 @@ export const FOLLOW_USER_MUTATION = gql`
     }
   }
 `
+
+export const STOP_FOLLOWING_USER_MUTATION = gql`
+  mutation stopFollowingUser($id: ID){
+    stopFollowingUser(id: $id){
+      success
+    }
+  }
+`

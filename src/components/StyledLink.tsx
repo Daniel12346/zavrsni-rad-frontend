@@ -6,6 +6,7 @@ export const StyledLink = styled(Link)`
     flex-flow: row nowrap;
     text-decoration: none;
     width: auto;
+    cursor: pointer;
     gap: 0.3rem;
     align-items: center;
     color: ${({ theme }) => theme.colors.textBasic};

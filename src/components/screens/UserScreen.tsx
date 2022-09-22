@@ -4,13 +4,13 @@ import Nav from "components/Nav";
 import ScreenContentContainer from "../ScreenContentContainer";
 import CreatePostButton from "components/CreatePostButton";
 import styled from "styled-components";
-import Post from "components/Post";
 import { Post as PostType, useUserQuery } from "graphql/types";
-import { ReactComponent as AchievementGold } from "images/achievement_gold.svg"
 import StyledUserInfo from "components/StyledUserInfo";
-import { StyledPostList } from "../PostList";
 import { useParams } from "react-router-dom";
 import Loader from "components/Loader";
+import UserFollowOptions from "components/styled/UserFollowOptions";
+import RestrictedPostList from "components/RestrictedPostList";
+import { StyledLink } from "components/StyledLink";
 
 
 export default () => {
@@ -27,42 +27,32 @@ export default () => {
                 <StyledUserInfo>
                     <StyledProfileImage isLarge src={user.profileImageUrl ?? ""} />
                     <span className="userName">{user.firstName} {user.lastName}</span>
-                    <StyledAchievementsContainer>
-                        {/* TODO: */}
-                        <AchievementGold />
-                        <AchievementGold />
-                        <AchievementGold />
-                    </StyledAchievementsContainer>
                 <StyledListsContainer>
                     <span>Following ({user.following.length})</span>
 
                     <StyledUserProfileImageList>
-                    {user?.following.map(following=>following && <li>
+                    {user?.following.map(following=>following && <StyledLink to={"/users/" + following.id}>
                         <StyledProfileImage src={following?.profileImageUrl || ""}/>
-                    </li>)}
+                    </StyledLink>)}
                     </StyledUserProfileImageList>
 
                     <span>Followers ({user?.followers?.length})</span>
                     <StyledUserProfileImageList>
-                    {user?.followers?.map(follower=>follower && <li>
+                    {user?.followers?.map(follower=>follower && <StyledLink to={"/users/" + follower.id}>
                         <StyledProfileImage src={follower?.profileImageUrl || ""}/>
-                    </li>)}
+                    </StyledLink>)}
                     </StyledUserProfileImageList>
                 </StyledListsContainer>
-
+                <UserFollowOptions user={user}/>
                 </StyledUserInfo>
-                <StyledPostList>
-                    {user?.posts.map(post => <Post post={{...post,author:user} as PostType} />)}
-                </StyledPostList>
+                <RestrictedPostList posts={(user?.posts.map(post=>({...post, author: user})))as PostType[]}/>
             </>}
         </ScreenContentContainer>
         <CreatePostButton />
     </>
 }
 
-const StyledAchievementsContainer = styled.div`
-    width: 100%;
-`
+
 const StyledUserProfileImageList = styled.ul`
     display: flex;
     flex-flow: row wrap;
@@ -70,5 +60,4 @@ const StyledUserProfileImageList = styled.ul`
 const StyledListsContainer = styled.div`
     display: flex;
     flex-flow: column nowrap;
-
 `

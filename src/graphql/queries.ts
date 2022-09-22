@@ -19,7 +19,8 @@ export const ME_QUERY = gql`
         imageUrls 
         title
         text      
-        createdAt        
+        createdAt    
+        id    
       }
       followers{
         ...UserInfo
@@ -41,7 +42,9 @@ export const USER_QUERY = gql`
         mainImageUrl
         imageUrls 
         title
-        text              
+        text       
+        createdAt   
+        restrictedTo     
       }
       followers{
         ...UserInfo

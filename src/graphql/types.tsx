@@ -31,6 +31,7 @@ export type Mutation = {
   deleteUser?: Maybe<MutationResult>;
   followUser?: Maybe<MutationResult>;
   logIn?: Maybe<Scalars['String']>;
+  stopFollowingUser?: Maybe<MutationResult>;
   uploadImage?: Maybe<MutationResult>;
   uploadPostImage?: Maybe<MutationResult>;
   uploadPostImages?: Maybe<MutationResult>;
@@ -67,6 +68,11 @@ export type MutationFollowUserArgs = {
 export type MutationLogInArgs = {
   email?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationStopFollowingUserArgs = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 
@@ -162,7 +168,7 @@ export type UserInput = {
 
 export type UserInfoFragment = { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null };
 
-export type PostInfoFragment = { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } };
+export type PostInfoFragment = { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, restrictedTo?: string | null, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } };
 
 export type LogInMutationVariables = Exact<{
   email: Scalars['String'];
@@ -199,7 +205,7 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, restrictedTo?: string | null, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } } };
 
 export type FollowUserMutationVariables = Exact<{
   id?: InputMaybe<Scalars['ID']>;
@@ -207,6 +213,13 @@ export type FollowUserMutationVariables = Exact<{
 
 
 export type FollowUserMutation = { __typename?: 'Mutation', followUser?: { __typename?: 'MutationResult', success?: boolean | null } | null };
+
+export type StopFollowingUserMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type StopFollowingUserMutation = { __typename?: 'Mutation', stopFollowingUser?: { __typename?: 'MutationResult', success?: boolean | null } | null };
 
 export type UsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -216,14 +229,14 @@ export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'Us
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null, posts: Array<{ __typename?: 'Post', mainImageUrl?: string | null, imageUrls: Array<string | null>, title?: string | null, text?: string | null, createdAt: any } | null>, followers: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null>, following: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null> } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null, posts: Array<{ __typename?: 'Post', mainImageUrl?: string | null, imageUrls: Array<string | null>, title?: string | null, text?: string | null, createdAt: any, id: string } | null>, followers: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null>, following: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null> } | null };
 
 export type UserQueryVariables = Exact<{
   id?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null, posts: Array<{ __typename?: 'Post', mainImageUrl?: string | null, imageUrls: Array<string | null>, title?: string | null, text?: string | null } | null>, followers: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null>, following: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null> } | null };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null, posts: Array<{ __typename?: 'Post', mainImageUrl?: string | null, imageUrls: Array<string | null>, title?: string | null, text?: string | null, createdAt: any, restrictedTo?: string | null } | null>, followers: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null>, following: Array<{ __typename?: 'User', firstName: string, lastName: string, id: string, profileImageUrl?: string | null, backgroundImageUrl?: string | null } | null> } | null };
 
 export type UsersByKeyQueryVariables = Exact<{
   key?: InputMaybe<Scalars['String']>;
@@ -237,14 +250,14 @@ export type PostsByKeyQueryVariables = Exact<{
 }>;
 
 
-export type PostsByKeyQuery = { __typename?: 'Query', postsByKey?: Array<{ __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } } | null> | null };
+export type PostsByKeyQuery = { __typename?: 'Query', postsByKey?: Array<{ __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, restrictedTo?: string | null, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } } | null> | null };
 
 export type ViewablePostsQueryVariables = Exact<{
   showPublicPosts?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
-export type ViewablePostsQuery = { __typename?: 'Query', viewablePosts?: Array<{ __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } } | null> | null };
+export type ViewablePostsQuery = { __typename?: 'Query', viewablePosts?: Array<{ __typename?: 'Post', id: string, createdAt: any, mainImageUrl?: string | null, title?: string | null, text?: string | null, imageUrls: Array<string | null>, restrictedTo?: string | null, author: { __typename?: 'User', id: string, firstName: string, lastName: string, profileImageUrl?: string | null } } | null> | null };
 
 export const UserInfoFragmentDoc = gql`
     fragment UserInfo on User {
@@ -269,6 +282,7 @@ export const PostInfoFragmentDoc = gql`
   title
   text
   imageUrls
+  restrictedTo
 }
     `;
 export const LogInDocument = gql`
@@ -454,6 +468,39 @@ export function useFollowUserMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type FollowUserMutationHookResult = ReturnType<typeof useFollowUserMutation>;
 export type FollowUserMutationResult = Apollo.MutationResult<FollowUserMutation>;
 export type FollowUserMutationOptions = Apollo.BaseMutationOptions<FollowUserMutation, FollowUserMutationVariables>;
+export const StopFollowingUserDocument = gql`
+    mutation stopFollowingUser($id: ID) {
+  stopFollowingUser(id: $id) {
+    success
+  }
+}
+    `;
+export type StopFollowingUserMutationFn = Apollo.MutationFunction<StopFollowingUserMutation, StopFollowingUserMutationVariables>;
+
+/**
+ * __useStopFollowingUserMutation__
+ *
+ * To run a mutation, you first call `useStopFollowingUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStopFollowingUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [stopFollowingUserMutation, { data, loading, error }] = useStopFollowingUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useStopFollowingUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<StopFollowingUserMutation, StopFollowingUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return ApolloReactHooks.useMutation<StopFollowingUserMutation, StopFollowingUserMutationVariables>(StopFollowingUserDocument, options);
+      }
+export type StopFollowingUserMutationHookResult = ReturnType<typeof useStopFollowingUserMutation>;
+export type StopFollowingUserMutationResult = Apollo.MutationResult<StopFollowingUserMutation>;
+export type StopFollowingUserMutationOptions = Apollo.BaseMutationOptions<StopFollowingUserMutation, StopFollowingUserMutationVariables>;
 export const UsersDocument = gql`
     query users {
   users {
@@ -498,6 +545,7 @@ export const MeDocument = gql`
       title
       text
       createdAt
+      id
     }
     followers {
       ...UserInfo
@@ -544,6 +592,8 @@ export const UserDocument = gql`
       imageUrls
       title
       text
+      createdAt
+      restrictedTo
     }
     followers {
       ...UserInfo

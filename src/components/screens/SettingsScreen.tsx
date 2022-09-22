@@ -5,6 +5,7 @@ import ScreenContentContainer from "../ScreenContentContainer";
 import CreatePostButton from "components/CreatePostButton";
 import styled from "styled-components";
 import {useNavigate} from "react-router-dom"
+import ImageUploader from "components/ImageUploader";
 
 
 export default () => {
@@ -19,6 +20,14 @@ export default () => {
                    await logOut();
                    navigate("/auth");
                     }}>log out</StyledLogoutButton>
+                    <div>
+                        <span>ProfileImage:</span>
+                        <ImageUploader purpose="profile"></ImageUploader>
+                    </div>
+                    <div>
+                        <span>Background:</span>
+                        <ImageUploader purpose="background"></ImageUploader>
+                    </div> 
           </StyledSettings>
         </ScreenContentContainer>
         <CreatePostButton />
@@ -26,10 +35,14 @@ export default () => {
 }
 
 const StyledSettings = styled.div`
-    background: ${({ theme })=> theme.colors.background1};
+    background: ${({ theme })=> theme.colors.primary1};
+    opacity: 0.85;
     width: 90%;
     max-width: 25rem;
     padding: 1rem;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
     
 `
 const StyledLogoutButton = styled.button`
@@ -38,4 +51,8 @@ const StyledLogoutButton = styled.button`
     padding: 0.3rem;
     color: red;
     border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    max-width: 7rem;
 `
